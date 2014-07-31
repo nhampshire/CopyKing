@@ -16,7 +16,7 @@ public class CopyKing
 		System.out.println("Listening...");
 		while (true) {
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(1000); //interval at which program checks for new URL
                     getCopy();
                 } catch (Exception e) {
                     // TODO: handle exception
@@ -31,32 +31,29 @@ public class CopyKing
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 
 		/* get clipboard context */
-
 		Transferable data = clipboard.getContents(null);
 
 		/* is context string */
-
 		boolean isText = ( ( data != null ) && ( data.isDataFlavorSupported( DataFlavor.stringFlavor ) ) );
 
 		/* if yes print it and/or add to list (depending on version) */
-
 		if ( isText ) {
-		try
-		{
-			String URL_REGEX = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
-			Pattern p = Pattern.compile(URL_REGEX);
-			
-			String s = (String)data.getTransferData( DataFlavor.stringFlavor );
-			Matcher m = p.matcher(s);//replace with string to compare
-			if(!s.equals(prev) && m.find())
+			try
 			{
-				prev = s;
-				String thisCopy= num + ". " + s;
-				System.out.println(thisCopy);
-				num++;
-			}
-
-		} catch(Exception e){System.out.println(e);}
+				String URL_REGEX = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+				Pattern p = Pattern.compile(URL_REGEX);
+				
+				String s = (String)data.getTransferData( DataFlavor.stringFlavor );
+				Matcher m = p.matcher(s);//replace with string to compare
+				if(!s.equals(prev) && m.find())
+				{
+					prev = s;
+					String thisCopy= num + ". " + s;
+					System.out.println(thisCopy);
+					num++;
+				}
+	
+			} catch(Exception e){System.out.println(e);}
 		}
 	}
 
